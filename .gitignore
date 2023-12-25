@@ -1,0 +1,10 @@
+node_modules
+**/node_modules
+dist/
+logs
+*.log
+npm-debug.log*
+.vscode-test/
+.history/
+*.vsix
+out/
