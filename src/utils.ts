@@ -2,28 +2,56 @@ import * as vscode from 'vscode';
 import { POLL_INTERVAL } from './constants';
 
 export function capitalizeFirstLetter(inputString: string) {
-  if (typeof inputString !== 'string' || inputString.length === 0) return;
+	if (typeof inputString !== 'string' || inputString.length === 0) return;
 
-  const capitalizedString = inputString.charAt(0).toUpperCase() + inputString.slice(1);
+	const capitalizedString = inputString.charAt(0).toUpperCase() + inputString.slice(1);
 
-  return capitalizedString;
+	return capitalizedString;
 }
 
 export const getConfig = () => {
-	const { state, zone, timer, countdown } = vscode.workspace.getConfiguration("myPrayerReminder");;
-	if (!state || !zone || !timer || !countdown) {
+	const { timer, countdown, zone } = vscode.workspace.getConfiguration("myPrayerReminder");
+	if (!timer || !countdown || !zone) {
 		vscode.window.showErrorMessage('Malaysia Prayer Reminder: Incomplete configuration. Fill in all fields.');
 		throw new Error('Incomplete configuration');
 	} else {
-		return { state, zone, timer, countdown }
+		return { timer, countdown, zone }
 	}
 };
 
-export const handleError = (error: any) => {
+type Zones = {
+	code: string,
+	areas: string[][],
+}
+
+export const getPrayerZone = (zone: string) => {
+	const lines = zone.split('\n');
+
+	const result: Zones = {
+		code: "",
+		areas: [] as string[][]
+	}
+
+	lines.forEach((line) => {
+		if (line.trim().startsWith("===")) {
+			return;
+		}
+
+		const [code, areasString] = line.split(" - ");
+
+		const areas = areasString.split(", ");
+
+		result.code = code;
+		result.areas.push(areas);
+	});
+
+	return result.areas[0][0];
+}
+
+export const handleError = (error: string) => {
 	vscode.window.showErrorMessage(
-		'Malaysia Prayer Reminder: Error fetching prayer times. Check your settings and reload the window.'
+		`Malaysia Prayer Reminder: ${error}`
 	);
-	console.error(error);
 };
 
 export const showPrayerReminder = (prayerName: string) => {
