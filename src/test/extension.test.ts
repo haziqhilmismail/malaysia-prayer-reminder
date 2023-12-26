@@ -1,11 +1,20 @@
 import * as assert from 'assert';
 import * as vscode from 'vscode';
 
-import { shouldShowNotification } from '../utils';
+import { getPrayerZone, shouldShowNotification } from '../utils';
 import { calculateTimeLeft } from '../calculator';
+
 
 suite('Extension Test Suite', () => {
 	vscode.window.showInformationMessage('Start all tests.');
+
+	test('getPrayerZone returns the first item of the area list', () => {
+		const zone = "JHR04 - Batu Pahat, Muar, Segamat, Gemas Johor, Tangkak";
+
+		const result = getPrayerZone(zone);
+
+		assert.strictEqual(result, "Batu Pahat")
+	});
 
 	test('calculateTimeLeft returns correct time difference', () => {
 		const prayerTime = new Date(2023, 0, 1, 12, 0, 0); // January 1, 2023, 12:00 PM
