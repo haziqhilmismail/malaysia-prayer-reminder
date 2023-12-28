@@ -122,6 +122,7 @@ const updateStatusBarText = () => {
 }
 
 const updateStatusBarEveryMinute = () => {
+	const { timer } = getConfig();
 	setInterval(async () => {
 		const date = new Date();
 		const day = date.getDate();
@@ -152,9 +153,10 @@ const updateStatusBarEveryMinute = () => {
 			prayersCountdown.set(nextPrayerName, prayersCountdown.get(nextPrayerName) - POLL_INTERVAL);
 		}
 
-		const timeLeft = calculateTimeLeft(prayersCountdown.get(nextPrayerName), CURRENT_DATE);
-		if (shouldShowNotification(timeLeft, getConfig().timer)) {
-			showNotificationReminder(nextPrayerName, getConfig().timer);
+		const timeLeft = prayersCountdown.get(nextPrayerName);
+
+		if (shouldShowNotification(timeLeft, timer)) {
+			showNotificationReminder(nextPrayerName, timer);
 		}
 
 		updateStatusBarText();
