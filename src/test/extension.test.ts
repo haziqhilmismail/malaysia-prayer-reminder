@@ -4,7 +4,6 @@ import * as vscode from 'vscode';
 import { getPrayerZone, shouldShowNotification } from '../utils';
 import { calculateTimeLeft } from '../calculator';
 
-
 suite('Extension Test Suite', () => {
 	vscode.window.showInformationMessage('Start all tests.');
 
@@ -32,5 +31,14 @@ suite('Extension Test Suite', () => {
 		const result = shouldShowNotification(timeLeft, timer);
 
 		assert.strictEqual(result, true);
+	});
+
+	test('shouldShowNotification returns false when it\'s NOT the time to show the notification', () => {
+		const timeLeft = 10 * 60 * 1000; // 10 minutes in milliseconds
+		const timer = 5;
+
+		const result = shouldShowNotification(timeLeft, timer);
+
+		assert.strictEqual(result, false);
 	});
 });
