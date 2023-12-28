@@ -27,11 +27,6 @@
             "default": 5,
             "description": "Enter the reminder timer. Default is 5 minutes before prayer times."
           },
-          "myPrayerReminder.countdown.show": {
-            "type": "boolean",
-            "default": false,
-            "description": "Choose whether to always show the prayer countdown or only after the reminder shown up."
-          },
           "myPrayerReminder.zone": {
             "type": "string",
             "default": "SGR01 - Gombak, Petaling, Sepang, Hulu Langat, Hulu Selangor, S. Alam",

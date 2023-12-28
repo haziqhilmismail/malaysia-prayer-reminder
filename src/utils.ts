@@ -10,12 +10,12 @@ export function capitalizeFirstLetter(inputString: string) {
 }
 
 export const getConfig = () => {
-	const { timer, countdown, zone } = vscode.workspace.getConfiguration("myPrayerReminder");
-	if (!timer || !countdown || !zone) {
+	const { timer, zone } = vscode.workspace.getConfiguration("myPrayerReminder");
+	if (!timer || !zone) {
 		vscode.window.showErrorMessage('Malaysia Prayer Reminder: Incomplete configuration. Fill in all fields.');
 		throw new Error('Incomplete configuration');
 	} else {
-		return { timer, countdown, zone }
+		return { timer, zone }
 	}
 };
 
