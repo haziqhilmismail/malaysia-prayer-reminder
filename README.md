@@ -7,22 +7,22 @@ It ultilized this [**Waktu Solat API**](https://zaimramlan.github.io/waktu-solat
 ## Features
 
 #### Prayer countdown
-![Prayer countdown status bar](images/feature-prayer-countdown.png)
+![Prayer countdown status bar](https://i.imgur.com/yIttlip.png)
 
 #### No prayer left status
-![No prayer left status bar](images/feature-no-prayer-left.png)
+![No prayer left status bar](https://i.imgur.com/4tCPiLB.png)
 
 #### Prayer time notification
-![Prayer time notification](images/feature-prayer-time-notification.png)
+![Prayer time notification](https://i.imgur.com/S3SAqa9.png)
 
 #### Prayer reminder notification
-![Minutes before prayer time reminder](images/feature-reminder-notification.png)
+![Minutes before prayer time reminder](https://i.imgur.com/3LPyKoU.png)
 
 ## Extension Settings
 
 This extension contributes the following settings:
 
-![Minutes before prayer time reminder](images/settings.png)
+![Minutes before prayer time reminder](https://i.imgur.com/GfXWlQI.png)
 
 * `myPrayerReminder.timer`: Enter the reminder timer.
 
