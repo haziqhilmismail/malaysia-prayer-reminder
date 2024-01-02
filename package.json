@@ -2,7 +2,7 @@
   "name": "my-prayer-reminder",
   "displayName": "Malaysia Prayer Reminder",
   "publisher": "atmahana",
-  "icon": "https://i.imgur.com/8VL07jX.png",
+  "icon": "icon.png",
   "description": "An extension to remind the prayer time (Malaysia only)",
   "repository": {
     "url": "https://github.com/atmahana/malaysia-prayer-reminder"
