@@ -19,33 +19,22 @@ export const getConfig = () => {
 	}
 };
 
-type Zones = {
-	code: string,
-	areas: string[][],
-}
-
 export const getPrayerZone = (zone: string) => {
 	const lines = zone.split('\n');
 
-	const result: Zones = {
-		code: "",
-		areas: [] as string[][]
-	}
+	let zoneCode = '';
 
 	lines.forEach((line) => {
 		if (line.trim().startsWith("===")) {
 			return;
 		}
 
-		const [code, areasString] = line.split(" - ");
+		const [code, _] = line.split(" - ");
 
-		const areas = areasString.split(", ");
-
-		result.code = code;
-		result.areas.push(areas);
+		zoneCode = code
 	});
 
-	return result.areas[0][0];
+	return zoneCode.toLowerCase();
 }
 
 export const handleError = (error: string) => {

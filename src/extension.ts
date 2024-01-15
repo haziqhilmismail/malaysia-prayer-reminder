@@ -2,12 +2,9 @@ import * as vscode from 'vscode';
 import axios, { AxiosError } from 'axios';
 import { capitalizeFirstLetter, getConfig, handleError, showPrayerReminder, showNotificationReminder, shouldShowNotification, getPrayerZone } from './utils';
 import { calculateHoursMinutes, calculateTimeBefore, calculateTimeLeft } from './calculator';
-import { POLL_INTERVAL, CURRENT_DATE, CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY } from './constants';
+import { POLL_INTERVAL, CURRENT_DATE, CURRENT_DAY, API_URL } from './constants';
 
-type PrayerTime = {
-	name: string,
-	time: string
-}[];
+type PrayerTime = Record<string, unknown>
 
 const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
 
@@ -23,16 +20,35 @@ const fetchPrayerTimes = async (): Promise<PrayerTime> => {
 		const { zone } = getConfig();
 		const zon = getPrayerZone(zone);
 
-		const url = `https://waktu-solat-api.herokuapp.com/api/v1/prayer_times.json?zon=${zon.toLowerCase()}`
+		const url = API_URL + zon;
 		const res = await axios.get(url)
 
-		if (!res.data || !res.data.data[0]) {
+		const dataYear = res.data.year;
+		const dataMonth = res.data.month;
+		const dataPrayersTime = res.data.prayers;
+
+		const ignore = ['day', 'hijri', 'syuruk',];
+		const prayerOrder = ['fajr', 'dhuhr', 'asr', 'maghrib', 'isha'];
+
+		if (!res.data) {
 			handleError("Invalid API response. Check your prayer's zone configuration and reload the window")
-		} else if (res.data.data[0].waktu_solat.length === 0) {
-			handleError("No prayer time available from the API response")
 		}
 
-		return res.data.data[0].waktu_solat;
+		for (let i = 0; i < dataPrayersTime.length; i++) {
+			if (dataPrayersTime[i].day === CURRENT_DAY) {
+				const filteredData = Object.fromEntries(
+					Object.entries(dataPrayersTime[i])
+						.filter(([key]) => !ignore.includes(key))
+				);
+
+				const reorderedData = Object.fromEntries(
+					prayerOrder.map(key => [key, filteredData[key]])
+				);
+
+				return reorderedData;
+			}
+		}
+
 	} catch (error) {
 		if (axios.isAxiosError(error)) {
 			const axiosError = error as AxiosError;
@@ -47,8 +63,8 @@ const fetchPrayerTimes = async (): Promise<PrayerTime> => {
 		} else {
 			handleError("Unable to fetch prayer times. Check your prayer zone configuration and reload the window");
 		}
-		return [];
 	}
+	return {};
 }
 
 const updateMaps = async () => {
@@ -64,14 +80,20 @@ const updateMaps = async () => {
 	if (prayerTimesData.length === 0) {
 		handleError("Unable to fetch prayer times. Check your prayer zone configuration and reload the window");
 	} else {
-		for (const [_, value] of Object.entries(prayerTimesData)) {
-			prayersTiming.set(value.name, value.time);
+		for (const [key, value] of Object.entries(prayerTimesData)) {
+			prayersTiming.set(key, value);
 		}
 
 		for (const [key, value] of prayersTiming) {
-			let [hour, minute] = value.split(':'), timeLeft = 0;
-			const prayerTime = new Date(CURRENT_YEAR, CURRENT_MONTH, CURRENT_DAY, hour, minute);
-			const timerDate = calculateTimeBefore(hour, minute, timer)
+			let timeLeft = 0;
+
+			const timestamp = value * 1000;
+			const prayerTime = new Date(timestamp);
+
+			const hour = prayerTime.getHours();
+			const minute = prayerTime.getMinutes();
+
+			const timerDate = calculateTimeBefore(hour, minute, timer);
 
 			if (CURRENT_DATE === timerDate) {
 				timeLeft = calculateTimeLeft(prayerTime, timerDate);
@@ -158,7 +180,7 @@ const updateStatusBarEveryMinute = () => {
 		if (shouldShowNotification(timeLeft, timer)) {
 			showNotificationReminder(nextPrayerName, timer);
 		}
-
+``
 		updateStatusBarText();
 	}, POLL_INTERVAL);
 };
@@ -173,7 +195,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	updateStatusBarEveryMinute();
 
-	let refresh = vscode.commands.registerCommand('myPrayerReminder.refresh', () => {
+	let refresh = vscode.commands.registerCommand('myPrayerReminder.refresh', async () => {
 		updateMaps().then(() => updateStatusBarText()).then(() => {
 			vscode.window.showInformationMessage("Malaysia Prayer Reminder: Refreshed");
 		});
