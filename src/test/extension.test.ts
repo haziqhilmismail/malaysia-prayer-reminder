@@ -7,12 +7,12 @@ import { calculateTimeLeft } from '../calculator';
 suite('Extension Test Suite', () => {
 	vscode.window.showInformationMessage('Start all tests.');
 
-	test('getPrayerZone returns the first item of the area list', () => {
+	test('getPrayerZone returns the zone code', () => {
 		const zone = "JHR04 - Batu Pahat, Muar, Segamat, Gemas Johor, Tangkak";
 
 		const result = getPrayerZone(zone);
 
-		assert.strictEqual(result, "Batu Pahat")
+		assert.strictEqual(result, "jhr04")
 	});
 
 	test('calculateTimeLeft returns correct time difference', () => {
