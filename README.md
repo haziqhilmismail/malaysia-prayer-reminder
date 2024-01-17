@@ -7,32 +7,31 @@ It uses the [**Waktu Solat API**](https://api.waktusolat.app/) and is written in
 ## Features
 
 #### Prayer countdown
-![Prayer countdown status bar](https://i.imgur.com/yIttlip.png)
+![Prayer countdown status bar](https://i.imgur.com/xfW1WAg.png)
 
 #### No prayer left status
-![No prayer left status bar](https://i.imgur.com/4tCPiLB.png)
+![No prayer left status bar](https://i.imgur.com/z8rBQvC.png)
 
 #### Prayer time notification
-![Prayer time notification](https://i.imgur.com/S3SAqa9.png)
+![Prayer time notification](https://i.imgur.com/hcj43Ix.png)
 
 #### Prayer reminder notification
-![Minutes before prayer time reminder](https://i.imgur.com/3LPyKoU.png)
+![prayer time reminder notification](https://i.imgur.com/DxiP0LM.png)
+
+## Extension Command 
+
+* `myPrayerReminder.refresh`: Refresh the extension. Typically after you change any of the settings below.
 
 ## Extension Settings
 
 This extension contributes the following settings:
 
-![Minutes before prayer time reminder](https://i.imgur.com/GfXWlQI.png)
+![Settings](https://i.imgur.com/GfXWlQI.png)
 
 * `myPrayerReminder.timer`: Enter the reminder timer.
 
 * `myPrayerReminder.zone`: Select your prayer zone from the dropdown.
 
-## Known Issues
-
-* Zone of **'KTN02 Gua Musang (Daerah Galas Dan Bertam), Jeli, Jajahan Kecil Lojing'** will throw an error if selected as the API sends an empty array of prayer times for the area. 
-
-I have submitted an issue for the API error, as for now this issue will remain error.
 
 ## Release Notes
 
