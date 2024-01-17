@@ -2,7 +2,7 @@
 
 This was built to serve as a prayer time reminder in the hope of encouraging us to perform prayers at the beginning of its times. 
 
-It ultilized this [**Waktu Solat API**](https://zaimramlan.github.io/waktu-solat-api/) and written in **TypeScript**. This extension is inspired by a similar extension: [**Prayer Reminder**](https://marketplace.visualstudio.com/items?itemName=OmarAbdulRahman.prayer-reminder).
+It uses the [**Waktu Solat API**](https://api.waktusolat.app/) and is written in **TypeScript**, inspired by a similar extension: [**Prayer Reminder**](https://marketplace.visualstudio.com/items?itemName=OmarAbdulRahman.prayer-reminder).
 
 ## Features
 
