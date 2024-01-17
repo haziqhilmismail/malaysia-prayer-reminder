@@ -6,7 +6,7 @@ import { POLL_INTERVAL, CURRENT_DATE, CURRENT_DAY, API_URL } from './constants';
 
 type PrayerTime = Record<string, unknown>
 
-const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
+const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left);
 
 const prayersCountdown = new Map(),
 	prayersTiming = new Map();
@@ -23,8 +23,6 @@ const fetchPrayerTimes = async (): Promise<PrayerTime> => {
 		const url = API_URL + zon;
 		const res = await axios.get(url)
 
-		const dataYear = res.data.year;
-		const dataMonth = res.data.month;
 		const dataPrayersTime = res.data.prayers;
 
 		const ignore = ['day', 'hijri', 'syuruk',];
