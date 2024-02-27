@@ -1,7 +1,7 @@
 {
   "name": "my-prayer-reminder",
   "displayName": "Malaysia Prayer Reminder",
-  "publisher": "Zubair Adham",
+  "publisher": "atmahana",
   "icon": "icon.png",
   "description": "An extension to remind the prayer time (Malaysia only)",
   "repository": {
