@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import axios, { AxiosError } from 'axios';
 import { capitalizeFirstLetter, getConfig, handleError, showPrayerReminder, showNotificationReminder, shouldShowNotification, getPrayerZone } from './utils';
 import { calculateHoursMinutes, calculateTimeBefore, calculateTimeLeft } from './calculator';
-import { POLL_INTERVAL, CURRENT_DATE, CURRENT_DAY, API_URL } from './constants';
+import { POLL_INTERVAL, API_URL } from './constants';
 
 type PrayerTime = Record<string, unknown>
 
@@ -33,7 +33,7 @@ const fetchPrayerTimes = async (): Promise<PrayerTime> => {
 		}
 
 		for (let i = 0; i < dataPrayersTime.length; i++) {
-			if (dataPrayersTime[i].day === CURRENT_DAY) {
+			if (dataPrayersTime[i].day === new Date().getDate()) {
 				const filteredData = Object.fromEntries(
 					Object.entries(dataPrayersTime[i])
 						.filter(([key]) => !ignore.includes(key))
@@ -71,7 +71,8 @@ const updateMaps = async () => {
 
 	const { timer } = getConfig();
 
-	lastDay = CURRENT_DAY;
+	const currentDate = new Date();
+	lastDay = currentDate.getDate();
 
 	const prayerTimesData = await fetchPrayerTimes();
 
@@ -93,10 +94,10 @@ const updateMaps = async () => {
 
 			const timerDate = calculateTimeBefore(hour, minute, timer);
 
-			if (CURRENT_DATE === timerDate) {
-				timeLeft = calculateTimeLeft(prayerTime, timerDate);
+			if (currentDate <= timerDate) {
+				timeLeft = calculateTimeLeft(prayerTime, currentDate);
 			} else {
-				timeLeft = calculateTimeLeft(prayerTime, CURRENT_DATE);
+				timeLeft = calculateTimeLeft(prayerTime, currentDate);
 			}
 
 			if (timeLeft > 0) {
@@ -117,10 +118,10 @@ const updateStatusBarText = () => {
 		return;
 	}
 
-	const date = new Date();
-	const day = date.getDate();
+	const currentDate = new Date();
+	const currentDay = currentDate.getDate();
 
-	if (day !== lastDay) updateMaps().then(() => updateStatusBarText());
+	if (currentDay !== lastDay) updateMaps().then(() => updateStatusBarText());
 
 	nextPrayerName = prayersCountdown.keys().next().value;
 
@@ -178,7 +179,6 @@ const updateStatusBarEveryMinute = () => {
 		if (shouldShowNotification(timeLeft, timer)) {
 			showNotificationReminder(nextPrayerName, timer);
 		}
-``
 		updateStatusBarText();
 	}, POLL_INTERVAL);
 };
